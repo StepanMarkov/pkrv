@@ -1,2 +1,12 @@
-﻿
+﻿function(check_files target_list)
+  foreach(file_path IN LISTS ${target_list})
+    if(file_path MATCHES "[^ -~]")
+      message(FATAL_ERROR "\n NON-ASCII""\n File: ${file_path}")
+    endif()
+    if(NOT EXISTS "${file_path}")
+      message(FATAL_ERROR "NOT EXISTS: ${file_path}")
+    endif()
+  endforeach()
+endfunction()
+
 add_subdirectory(src)
