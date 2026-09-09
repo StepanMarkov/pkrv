@@ -3,9 +3,16 @@ set(CONFIG_FILES
   config/config.h
 )
 
+set(UTILS_FILES
+  utils/memory_mapped.cc
+  utils/memory_mapped.h
+)
+
 source_group("config" FILES ${CONFIG_FILES})
+source_group("config" FILES ${UTILS_FILES})
 
 list(APPEND LIB_FILES ${CONFIG_FILES})
+list(APPEND LIB_FILES ${UTILS_FILES})
 
 set(ABSOLUTE_LIB_FILES "")
 
