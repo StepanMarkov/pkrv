@@ -6,6 +6,7 @@ set(CONFIG_FILES
 set(UTILS_FILES
   utils/memory_mapped.cc
   utils/memory_mapped.h
+  utils/hybrid_map.h
 )
 
 source_group("config" FILES ${CONFIG_FILES})
