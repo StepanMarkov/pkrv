@@ -20,15 +20,29 @@ set (IO_FILES
   io/parser.h
 )
 
-source_group("config" FILES ${CONFIG_FILES})
-source_group("utils"  FILES ${UTILS_FILES})
-source_group("model"  FILES ${MODEL_FILES})
-source_group("io"     FILES ${IO_FILES})
+set (RESULT_FILES
+  results/results.cc
+  results/results.h
+)
+
+set (SOLVER_FILES
+  solver/solver.cc
+  solver/solver.h
+)
+
+source_group("config"  FILES ${CONFIG_FILES})
+source_group("utils"   FILES ${UTILS_FILES})
+source_group("model"   FILES ${MODEL_FILES})
+source_group("io"      FILES ${IO_FILES})
+source_group("results" FILES ${RESULT_FILES})
+source_group("solver"  FILES ${SOLVER_FILES})
 
 list(APPEND LIB_FILES ${CONFIG_FILES})
 list(APPEND LIB_FILES ${UTILS_FILES})
 list(APPEND LIB_FILES ${MODEL_FILES})
 list(APPEND LIB_FILES ${IO_FILES})
+list(APPEND LIB_FILES ${RESULT_FILES})
+list(APPEND LIB_FILES ${SOLVER_FILES})
 
 set(ABSOLUTE_LIB_FILES "")
 
