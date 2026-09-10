@@ -45,7 +45,8 @@ std::unique_ptr<Model> Parser::Read(MemoryMapped& file) {
     pos = static_cast<const char*>(memchr(pos, '*', end - pos));
     if ((pos == nullptr) || (pos >= end)) break;
     line_end = static_cast<const char*>(memchr(pos, '\n', end - pos));
-    if ((line_end == nullptr) || (line_end >= end)) break;
+    if ((line_end == nullptr) || (line_end >= end))
+      line_end = end;
 
     std::string header(pos, line_end - pos);
     std::ranges::transform(header, header.begin(), ::toupper);
@@ -82,6 +83,53 @@ std::unique_ptr<Model> Parser::Read(MemoryMapped& file) {
 
     }
 
+    if (header_view.starts_with("*ELEMENT")) {
+      std::vector<const char*> lines;
+      lines.reserve(content.size() / 60);
+      CollectLines(lines);
+      
+      const std::string current_type = ExtractAttribute(header, "TYPE=");
+      const std::string block_name   = ExtractAttribute(header, "ELSET=");
+      
+      const size_t node_count = 6;
+      const size_t element_count = lines.size();
+
+      Model::ElementBlock block;
+      block.element_ids.resize(element_count);
+      block.connectivity.resize(element_count * node_count);
+      block.type_name = current_type;
+
+      size_t* const ptr_ids = block.element_ids.data();
+      size_t* const ptr_con = block.connectivity.data();
+
+      //#pragma omp parallel for
+      for (size_t element = 0; element < element_count; ++element) {
+        const char* l_ptr = lines[element];
+        size_t* const cur_ptr_con = ptr_con + element * node_count;
+        size_t node_id = -1;
+        parse(l_ptr, end, ptr_ids[element]);
+        
+        for (size_t node = 0; node < node_count; ++node) {
+          parse(l_ptr, end, node_id);
+          cur_ptr_con[node] = model->id_to_index().get(node_id);
+        }
+      }
+
+      model->AddBlock(block_name, std::move(block));
+
+    }
+
+    if (header_view.starts_with("*ARMOR_SECTION")) {
+      const std::string node_set_name = ExtractAttribute(header_view, "NSET=");
+      const std::string armor_name    = ExtractAttribute(header_view, "TYPE=");
+      model->AddArmor(node_set_name, armor_name);
+    }
+
+    if (header_view.starts_with("*TASK_SECTION")) {
+      const std::string element_set_name = ExtractAttribute(header_view, "ELSET=");
+      const std::string task_name        = ExtractAttribute(header_view, "TYPE=");
+      model->AddTask({ element_set_name, task_name });
+    }
 
   }
 

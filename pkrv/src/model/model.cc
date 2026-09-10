@@ -45,4 +45,20 @@ void Model::AddNodes(
 
 }
 
+void Model::AddBlock(
+  const std::string& block_name,
+  ElementBlock&& block) {
+  this->blocks_.emplace(block_name, block);
+}
+
+void Model::AddArmor(
+  const std::string& name,
+  const std::string& type) {
+  this->armor_section_.emplace(name, type);
+}
+
+void Model::AddTask(const Task& task) {
+  tasks_.push_back(task);
+}
+
 } // namespace pkrv

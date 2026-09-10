@@ -21,6 +21,11 @@ public:
     std::vector<size_t> element_ids;
     std::vector<size_t> connectivity;
   };
+
+  struct Task {
+    std::string owner;
+    std::string type;
+  };
   
   void AddNodes(
     const std::string& node_set_name,
@@ -28,6 +33,20 @@ public:
     std::vector<double>&& posX,
     std::vector<double>&& posY,
     std::vector<double>&& posZ);
+
+  void AddBlock(
+    const std::string& block_name,
+    ElementBlock&& block
+  );
+
+  void AddArmor(
+    const std::string& name,
+    const std::string& type
+  );
+
+  void AddTask(
+    const Task& task
+  );
   
   inline const auto& blocks       () const { return blocks_       ;}
   inline const auto& node_set     () const { return node_set_     ;}
@@ -37,12 +56,16 @@ public:
   inline const auto& posZ         () const { return posZ_         ;}
   inline const auto& index_to_id  () const { return index_to_id_  ;}
   inline const auto& id_to_index  () const { return id_to_index_  ;}
+  inline const auto& armor_section() const { return armor_section_;}
+  inline const auto& tasks        () const { return tasks_        ;}
 
 private:
 
   std::vector<double> posX_, posY_, posZ_;
   std::unordered_multimap<std::string, ElementBlock>    blocks_;
   std::unordered_map<std::string, std::vector<size_t>>  node_set_, element_set_;
+  std::unordered_multimap<std::string, std::string>     armor_section_;
+  std::list<Task>                                       tasks_;
   
   HybridMap id_to_index_;
   std::vector<size_t> index_to_id_;
