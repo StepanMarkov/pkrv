@@ -10,11 +10,25 @@ set(UTILS_FILES
   utils/simd_parser.h
 )
 
+set(MODEL_FILES
+  model/model.cc
+  model/model.h
+)
+
+set (IO_FILES
+  io/parser.cc
+  io/parser.h
+)
+
 source_group("config" FILES ${CONFIG_FILES})
-source_group("config" FILES ${UTILS_FILES})
+source_group("utils"  FILES ${UTILS_FILES})
+source_group("model"  FILES ${MODEL_FILES})
+source_group("io"     FILES ${IO_FILES})
 
 list(APPEND LIB_FILES ${CONFIG_FILES})
 list(APPEND LIB_FILES ${UTILS_FILES})
+list(APPEND LIB_FILES ${MODEL_FILES})
+list(APPEND LIB_FILES ${IO_FILES})
 
 set(ABSOLUTE_LIB_FILES "")
 
@@ -28,6 +42,7 @@ endforeach()
 check_files(ABSOLUTE_LIB_FILES)
 
 add_library(pkrv_lib ${LIB_FILES})
+target_include_directories(pkrv_lib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
 add_executable (pkrv "pkrv.cc" )
 target_link_libraries(pkrv PRIVATE pkrv_lib)
