@@ -30,12 +30,18 @@ set (SOLVER_FILES
   solver/solver.h
 )
 
-source_group("config"  FILES ${CONFIG_FILES})
-source_group("utils"   FILES ${UTILS_FILES})
-source_group("model"   FILES ${MODEL_FILES})
-source_group("io"      FILES ${IO_FILES})
-source_group("results" FILES ${RESULT_FILES})
-source_group("solver"  FILES ${SOLVER_FILES})
+set (ELEMENT_FILES
+  elements/concept_battery.h
+  elements/mrls_battery/mrls6.h
+)
+
+source_group("config"   FILES ${CONFIG_FILES})
+source_group("utils"    FILES ${UTILS_FILES})
+source_group("model"    FILES ${MODEL_FILES})
+source_group("io"       FILES ${IO_FILES})
+source_group("results"  FILES ${RESULT_FILES})
+source_group("solver"   FILES ${SOLVER_FILES})
+source_group("elements" FILES ${ELEMENT_FILES})
 
 list(APPEND LIB_FILES ${CONFIG_FILES})
 list(APPEND LIB_FILES ${UTILS_FILES})
@@ -43,6 +49,7 @@ list(APPEND LIB_FILES ${MODEL_FILES})
 list(APPEND LIB_FILES ${IO_FILES})
 list(APPEND LIB_FILES ${RESULT_FILES})
 list(APPEND LIB_FILES ${SOLVER_FILES})
+list(APPEND LIB_FILES ${ELEMENT_FILES})
 
 set(ABSOLUTE_LIB_FILES "")
 

@@ -6,6 +6,9 @@ namespace pkrv {
 
 void Solver::Solve() {
 
+  auto& liters = this->result_.get(State::LITERS_DISTRIBURION);
+  liters.resize(model_.index_to_id().size(), 0);
+
 }
 
 }  // namespace pkrv
