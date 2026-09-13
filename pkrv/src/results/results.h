@@ -10,6 +10,7 @@ namespace pkrv {
 namespace State {
   enum DOF {
     LITERS_DISTRIBURION = 0,
+    RPDS,
     COUNT
   };
 }
@@ -19,7 +20,7 @@ public:
   inline const auto& get(State::DOF result_name) const { return  state_fields_[result_name]; }
   inline auto& get(State::DOF result_name) { return  state_fields_[result_name]; }
 private:
-  std::vector<int>    state_fields_[State::COUNT] = {};
+  std::vector<size_t> state_fields_[State::COUNT] = {};
 };
 
 
